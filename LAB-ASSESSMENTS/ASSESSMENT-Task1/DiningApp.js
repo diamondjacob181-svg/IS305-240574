@@ -1,37 +1,81 @@
 /*
   Program: Dining Meal Booking Feature
-  Student Name: George Jacob
-  Student ID: 240574
+  Name: George Jacob
+  ID: 240574
   Date: 21 July 2026
-  Description: A JavaScript program demonstrating classes,
-  objects, constructors, private fields and methods.
+  Description: Node.js console application demonstrating
+  classes, objects, constructors, private fields and methods.
 */
 
-const MealBooking = require('./MealBooking');
+const readline = require("readline");
+const MealBooking = require("./MealBooking");
 
-// Create a booking object with student details
-const booking1 = new MealBooking("240574", "George Jacob", "2026-07-24", "Lunch", 2, "Vegeterian");
+// Store all bookings in an array
+const bookings = [];
 
-// Display formatted booking receipt
-console.log("========================================");
-console.log("       DWU DINING MEAL BOOKING");
-console.log("========================================\n");
+// Duplicate check
+function isDuplicate(studentId, mealDate, mealType) {
+  return bookings.some(
+    (b) => b.studentId === studentId && b.mealDate === mealDate && b.mealType === mealType
+  );
+}
 
-console.log(`Student ID: ${booking1.studentId}`);
-console.log(`Student name: ${booking1.studentName}`);
-console.log(`Meal date: ${booking1.mealDate}`);
-console.log(`Meal type: ${booking1.mealType}`);
-console.log(`Quantity: ${booking1.quantity}`);
-console.log(`Dietary note: ${booking1.dietaryNote}\n`);
+// Console input setup
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-console.log("========================================");
-console.log("          BOOKING CREATED");
-console.log("========================================");
-console.log(`Student: ${booking1.studentName} (${booking1.studentId})`);
-console.log(`Meal: ${booking1.mealType} x ${booking1.quantity}`);
-console.log(`Date: ${booking1.mealDate}`);
-console.log(`Dietary note: ${booking1.dietaryNote}`);
-console.log(`Status: ${booking1.bookingStatus}`);
-console.log(`Total cost: K${booking1.calculateTotal().toFixed(2)}`);
-console.log("========================================");
+function askQuestion(query) {
+  return new Promise((resolve) => rl.question(query, resolve));
+}
+
+async function main() {
+  try {
+    const studentId = await askQuestion("Enter Student ID: ");
+    const studentName = await askQuestion("Enter Student Name: ");
+    const mealDate = await askQuestion("Enter Meal Date (YYYY-MM-DD): ");
+    const mealType = await askQuestion("Enter Meal Type (Breakfast/Lunch/Dinner): ");
+    const quantity = parseInt(await askQuestion("Enter Quantity: "), 10);
+    const dietaryNote = await askQuestion("Enter Dietary Note: ");
+
+    // Duplicate prevention
+    if (isDuplicate(studentId, mealDate, mealType)) {
+      console.log("Error: Duplicate booking detected. Booking rejected.");
+      rl.close();
+      return;
+    }
+
+    // Create booking
+    const booking = new MealBooking(studentId, studentName, mealDate, mealType, quantity, dietaryNote);
+
+    // Validation
+    if (!studentId || !studentName || !mealDate) {
+      throw new Error("Missing required booking information.");
+    }
+    if (!["Breakfast", "Lunch", "Dinner"].includes(mealType)) {
+      throw new Error("Invalid meal type. Must be Breakfast, Lunch, or Dinner.");
+    }
+    if (quantity < 1) {
+      throw new Error("Quantity must be at least 1.");
+    }
+
+    // Add booking to array
+    bookings.push(booking);
+
+    // Display receipt
+    console.log("\n========================================");
+    console.log("          BOOKING CREATED");
+    console.log("========================================");
+    console.log(booking.getSummary());
+
+  } catch (error) {
+    console.error("Booking failed:", error.message);
+  } finally {
+    rl.close();
+  }
+}
+
+main();
+
 

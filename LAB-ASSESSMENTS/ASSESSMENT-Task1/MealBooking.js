@@ -1,76 +1,71 @@
 /*
-  Program: Dining Meal Booking Feature
+  Program: MealBooking Class (Refactored for Lab 2 Part 2)
   Student Name: George Jacob
   Student ID: 240574
   Date: 3 September 2026
-  Description: Node.js console application integrating Student and MealBooking classes.
+  Description: MealBooking now stores a Student object reference.
 */
 
-const readline = require("readline");
 const Student = require("./Student");
-const MealBooking = require("./MealBooking");
 
-const bookings = [];
+class MealBooking {
+  #student;       // Student object reference
+  #mealDate;
+  #mealType;
+  #quantity;
+  #dietaryNote;
+  #bookingStatus;
 
-function isDuplicate(studentId, mealDate, mealType) {
-  return bookings.some(
-    (b) => b.studentId === studentId && b.mealDate === mealDate && b.mealType === mealType
-  );
-}
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-function askQuestion(query) {
-  return new Promise((resolve) => rl.question(query, resolve));
-}
-
-async function main() {
-  try {
-    // Student details
-    const studentId = await askQuestion("Enter Student ID: ");
-    const firstName = await askQuestion("Enter First Name: ");
-    const lastName = await askQuestion("Enter Last Name: ");
-
-    const student = new Student(studentId, firstName, lastName);
-    console.log(student.displayInfo());
-
-    // Meal booking details
-    const mealDate = await askQuestion("Enter Meal Date (YYYY-MM-DD): ");
-    const mealType = await askQuestion("Enter Meal Type (Breakfast/Lunch/Dinner): ");
-    const quantity = parseInt(await askQuestion("Enter Quantity: "), 10);
-    const dietaryNote = await askQuestion("Enter Dietary Note: ");
-
-    if (isDuplicate(studentId, mealDate, mealType)) {
-      console.log("Error: Duplicate booking detected. Booking rejected.");
-      rl.close();
-      return;
+  constructor(student, mealDate, mealType, quantity, dietaryNote) {
+    if (!(student instanceof Student)) {
+      throw new Error("Invalid Student object provided.");
     }
+    this.#student = student;
+    this.#mealDate = mealDate;
+    this.#mealType = mealType;
+    this.#quantity = quantity;
+    this.#dietaryNote = dietaryNote;
+    this.#bookingStatus = "Pending"; // default
+  }
 
-    const booking = new MealBooking(studentId, student.getFullName(), mealDate, mealType, quantity, dietaryNote);
+  // Getters
+  get student() { return this.#student; }
+  get mealDate() { return this.#mealDate; }
+  get mealType() { return this.#mealType; }
+  get quantity() { return this.#quantity; }
+  get dietaryNote() { return this.#dietaryNote; }
+  get bookingStatus() { return this.#bookingStatus; }
 
-    if (!["Breakfast", "Lunch", "Dinner"].includes(mealType)) {
-      throw new Error("Invalid meal type. Must be Breakfast, Lunch, or Dinner.");
-    }
-    if (quantity < 1) {
-      throw new Error("Quantity must be at least 1.");
-    }
+  // Setters
+  set mealDate(date) { this.#mealDate = date; }
+  set mealType(type) { this.#mealType = type; }
+  set quantity(qty) { this.#quantity = qty; }
+  set dietaryNote(note) { this.#dietaryNote = note; }
+  set bookingStatus(status) { this.#bookingStatus = status; }
 
-    bookings.push(booking);
+  // Method to calculate total cost
+  calculateTotal() {
+    let price = 0;
+    if (this.#mealType === "Breakfast") price = 10;
+    else if (this.#mealType === "Lunch") price = 15;
+    else if (this.#mealType === "Dinner") price = 20;
+    return price * this.#quantity;
+  }
 
-    console.log("\n========================================");
-    console.log("          BOOKING CREATED");
-    console.log("========================================");
-    console.log(booking.getSummary());
-
-  } catch (error) {
-    console.error("Booking failed:", error.message);
-  } finally {
-    rl.close();
+  // Method to return booking summary
+  getSummary() {
+    return `
+    Booking Summary:
+    Student: ${this.#student.getFullName()} (ID: ${this.#student.studentId})
+    Meal: ${this.#mealType} on ${this.#mealDate}
+    Quantity: ${this.#quantity}
+    Dietary Note: ${this.#dietaryNote}
+    Status: ${this.#bookingStatus}
+    Total Cost: K${this.calculateTotal().toFixed(2)}
+    `;
   }
 }
 
-main();
+module.exports = MealBooking;
+
 

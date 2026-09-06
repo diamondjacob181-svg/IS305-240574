@@ -2,7 +2,7 @@
   Program: Dining Meal Booking Feature
   Student Name: George Jacob
   Student ID: 240574
-  Date: 6 September 2026
+  Date: 3 September 2026
   Description: Node.js console application integrating Student and MealBooking classes.
 */
 

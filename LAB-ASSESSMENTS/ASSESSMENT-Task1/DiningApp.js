@@ -98,5 +98,24 @@ async function main() {
 }
 
 main();
+const DiningAccount = require("./DiningAccount");
+const RewardsDiningAccount = require("./RewardsDiningAccount");
+
+// Standard account demo
+const account1 = new DiningAccount("DA001", 1000);
+account1.deposit(500);
+account1.payForMeal(200, "Lunch Payment");
+account1.displayAccountSummary();
+console.log(`Final Balance: K${account1.getBalance().toFixed(2)}\n`);
+
+// Rewards account demo
+const account2 = new RewardsDiningAccount("RA001", 1500, 2.5);
+account2.deposit(500, "Allowance");
+console.log(`Balance Before Reward: K${account2.getBalance().toFixed(2)}`);
+const reward = account2.calculateReward();
+console.log(`Reward Earned: K${reward.toFixed(2)}`);
+account2.applyReward();
+account2.displayAccountSummary();
+console.log(`Final Balance: K${account2.getBalance().toFixed(2)}`);
 
 

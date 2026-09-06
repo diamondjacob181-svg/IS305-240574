@@ -2,7 +2,7 @@
   Program: Dining Application (Lab 2 Part 2)
   Student Name: George Jacob
   Student ID: 240574
-  Date: 6 September 2026
+  Date: 3 September 2026
   Description: Integrates Student and MealBooking classes with booking history.
 */
 

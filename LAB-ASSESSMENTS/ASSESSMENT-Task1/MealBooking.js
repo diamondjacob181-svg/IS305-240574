@@ -2,68 +2,75 @@
   Program: Dining Meal Booking Feature
   Student Name: George Jacob
   Student ID: 240574
-  Date: 21 July 2026
-  Description: A JavaScript program demonstrating classes,
-  objects, constructors, private fields and methods.
+  Date: 6 September 2026
+  Description: Node.js console application integrating Student and MealBooking classes.
 */
 
-class MealBooking {
-  #studentId;
-  #studentName;
-  #mealDate;
-  #mealType;
-  #quantity;
-  #dietaryNote;
-  #bookingStatus;
+const readline = require("readline");
+const Student = require("./Student");
+const MealBooking = require("./MealBooking");
 
-  constructor(studentId, studentName, mealDate, mealType, quantity, dietaryNote) {
-    this.#studentId = studentId;
-    this.#studentName = studentName;
-    this.#mealDate = mealDate;
-    this.#mealType = mealType;
-    this.#quantity = quantity;
-    this.#dietaryNote = dietaryNote;
-    this.#bookingStatus = "Pending"; // default
-  }
+const bookings = [];
 
-  // Getters
-  get studentId() { return this.#studentId; }
-  get studentName() { return this.#studentName; }
-  get mealDate() { return this.#mealDate; }
-  get mealType() { return this.#mealType; }
-  get quantity() { return this.#quantity; }
-  get dietaryNote() { return this.#dietaryNote; }
-  get bookingStatus() { return this.#bookingStatus; }
+function isDuplicate(studentId, mealDate, mealType) {
+  return bookings.some(
+    (b) => b.studentId === studentId && b.mealDate === mealDate && b.mealType === mealType
+  );
+}
 
-  // Setters
-  set studentName(name) { this.#studentName = name; }
-  set mealDate(date) { this.#mealDate = date; }
-  set mealType(type) { this.#mealType = type; }
-  set quantity(qty) { this.#quantity = qty; }
-  set dietaryNote(note) { this.#dietaryNote = note; }
-  set bookingStatus(status) { this.#bookingStatus = status; }
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-  // Method to calculate total cost
-  calculateTotal() {
-    let price = 0;
-    if (this.#mealType === "Breakfast") price = 10;
-    else if (this.#mealType === "Lunch") price = 15;
-    else if (this.#mealType === "Dinner") price = 20;
-    return price * this.#quantity;
-  }
+function askQuestion(query) {
+  return new Promise((resolve) => rl.question(query, resolve));
+}
 
-  // Method to return booking summary
-  getSummary() {
-    return `
-    Booking Summary:
-    Student: ${this.#studentName} (ID: ${this.#studentId})
-    Meal: ${this.#mealType} on ${this.#mealDate}
-    Quantity: ${this.#quantity}
-    Dietary Note: ${this.#dietaryNote}
-    Status: ${this.#bookingStatus}
-    Total Cost: K${this.calculateTotal()}
-    `;
+async function main() {
+  try {
+    // Student details
+    const studentId = await askQuestion("Enter Student ID: ");
+    const firstName = await askQuestion("Enter First Name: ");
+    const lastName = await askQuestion("Enter Last Name: ");
+
+    const student = new Student(studentId, firstName, lastName);
+    console.log(student.displayInfo());
+
+    // Meal booking details
+    const mealDate = await askQuestion("Enter Meal Date (YYYY-MM-DD): ");
+    const mealType = await askQuestion("Enter Meal Type (Breakfast/Lunch/Dinner): ");
+    const quantity = parseInt(await askQuestion("Enter Quantity: "), 10);
+    const dietaryNote = await askQuestion("Enter Dietary Note: ");
+
+    if (isDuplicate(studentId, mealDate, mealType)) {
+      console.log("Error: Duplicate booking detected. Booking rejected.");
+      rl.close();
+      return;
+    }
+
+    const booking = new MealBooking(studentId, student.getFullName(), mealDate, mealType, quantity, dietaryNote);
+
+    if (!["Breakfast", "Lunch", "Dinner"].includes(mealType)) {
+      throw new Error("Invalid meal type. Must be Breakfast, Lunch, or Dinner.");
+    }
+    if (quantity < 1) {
+      throw new Error("Quantity must be at least 1.");
+    }
+
+    bookings.push(booking);
+
+    console.log("\n========================================");
+    console.log("          BOOKING CREATED");
+    console.log("========================================");
+    console.log(booking.getSummary());
+
+  } catch (error) {
+    console.error("Booking failed:", error.message);
+  } finally {
+    rl.close();
   }
 }
 
-module.exports = MealBooking;
+main();
+

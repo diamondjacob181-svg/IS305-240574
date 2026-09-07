@@ -26,13 +26,13 @@ Booking History
 
    - Added displayBookingHistory() to show:
 
-      -Student details once.
+   - Student details once.
 
-       - All bookings for that student.
+   - All bookings for that student.
 
-       - Total number of bookings.
+   - Total number of bookings.
 
-        Combined cost of bookings.
+   - Combined cost of bookings.
 
 Controlled Updates
 

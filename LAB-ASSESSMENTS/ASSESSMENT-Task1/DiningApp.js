@@ -1,10 +1,9 @@
 /*
-  Program: Dining Meal Booking Feature
-  Name: George Jacob
-  ID: 240574
-  Date: 21 July 2026
-  Description: Node.js console application demonstrating
-  classes, objects, constructors, private fields and methods.
+  Program: Dining Meal Booking Application
+  Student Name: George Jacob
+  Student ID: 240574
+  Date: 24 July 2026
+  Description: Complete Node.js console application for meal booking.
 */
 
 const readline = require("readline");
@@ -32,6 +31,10 @@ function askQuestion(query) {
 
 async function main() {
   try {
+    console.log("========================================");
+    console.log("       DWU DINING MEAL BOOKING");
+    console.log("========================================");
+
     const studentId = await askQuestion("Enter Student ID: ");
     const studentName = await askQuestion("Enter Student Name: ");
     const mealDate = await askQuestion("Enter Meal Date (YYYY-MM-DD): ");
@@ -50,23 +53,12 @@ async function main() {
     const booking = new MealBooking(studentId, studentName, mealDate, mealType, quantity, dietaryNote);
 
     // Validation
-    if (!studentId || !studentName || !mealDate) {
-      throw new Error("Missing required booking information.");
-    }
-    if (!["Breakfast", "Lunch", "Dinner"].includes(mealType)) {
-      throw new Error("Invalid meal type. Must be Breakfast, Lunch, or Dinner.");
-    }
-    if (quantity < 1) {
-      throw new Error("Quantity must be at least 1.");
-    }
+    booking.validate();
 
     // Add booking to array
     bookings.push(booking);
 
     // Display receipt
-    console.log("\n========================================");
-    console.log("          BOOKING CREATED");
-    console.log("========================================");
     console.log(booking.getSummary());
 
   } catch (error) {

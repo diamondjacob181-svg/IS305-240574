@@ -1,6 +1,11 @@
+'use strict';
+
+const ServiceRequest = require('./ServiceRequest');
+
 /**
- This class is used for general service requests and allows 
- the system to handle all requests consistently.
+ * Fallback concrete class for "General Campus Service" category so that
+ * every request in the system is an instance of a subclass and can be
+ * polymorphically processed.
  */
 const BASE_SCORE = { Low: 5, Normal: 15, High: 30, Urgent: 60 };
 const BASE_HOURS = { Low: 96, Normal: 48, High: 24, Urgent: 8 };

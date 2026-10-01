@@ -1,9 +1,9 @@
 # Campus Service Request Management System
 
-**Student Name:** <George Jacob
-**Student ID:** 240574
+**Student Name:** -George Jacob
+**Student ID:** -240574
 **Course:** IS305 – Object-Oriented Programming
-**Assessment:** IS305 Major Project
+**Assessment:** -IS305 Major Project
 
 
 ## Project Description

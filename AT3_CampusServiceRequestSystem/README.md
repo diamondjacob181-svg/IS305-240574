@@ -1,10 +1,10 @@
 # Campus Service Request Management System
 
-**Student Name:** <Your Name>
-**Student ID:** DWU2026001
+**Student Name:** <George Jacob
+**Student ID:** 240574
 **Course:** IS305 – Object-Oriented Programming
-**Assessment:** AT3 Major Project
-**GitHub Repo:** https://github.com/<your-username>/IS305-DWU2026001
+**Assessment:** IS305 Major Project
+
 
 ## Project Description
 A Node.js console application that lets students and staff submit, track and

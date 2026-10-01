@@ -30,14 +30,24 @@ those requests. Data is persisted to local JSON files (no database).
 
 ## Folder Structure
 AT3_CampusServiceRequestSystem/
+
 ├── package.json
+
 ├── README.md
+
 ├── data/ # JSON data files (auto-created/updated)
+
 ├── src/
 │ ├── CampusServiceApp.js
+
 │ ├── models/ # Domain classes (User, ServiceRequest, subclasses, factories)
+
 │ ├── managers/ # ServiceRequestManager
+
 │ ├── repositories/ # JSON file repositories
+
 │ └── utils/ # validators
+
 └── tests/
+
 └── system.test.js

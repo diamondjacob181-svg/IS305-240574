@@ -1,1 +1,16 @@
-
+{
+  "name": "campus-service-request-system",
+  "version": "1.0.0",
+  "description": "AT3 Major Project - Campus Service Request Management System (IS305 Object-Oriented Programming)",
+  "main": "src/CampusServiceApp.js",
+  "scripts": {
+    "start": "node src/CampusServiceApp.js",
+    "test": "node --test tests/"
+  },
+  "keywords": ["oop", "nodejs", "campus", "service-request", "is305"],
+  "author": "Student Name (DWU2026001)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

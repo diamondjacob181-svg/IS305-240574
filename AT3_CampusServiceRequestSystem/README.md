@@ -881,61 +881,21 @@ Request REQ1001 assigned to TECH001 (Alice Smith).
 
 4.9 Common Errors and Solutions
 Error message	Cause	Solution
-Invalid email format	Email missing @ or domain	Enter a valid email (e.g., a@b.com).
-Required field missing: title	Empty input	Re-run and provide all required fields.
-Permission denied for role STUDENT	Attempting an officer-only action	Log in with the correct role.
+Invalid email format	
+Email missing @ or domain	
+Enter a valid email (e.g., a@b.com).
+Required field missing: title	
+Empty input	Re-run and provide all required fields.
+Permission denied for role STUDENT	
+Attempting an officer-only action	
+Log in with the correct role.
 Invalid status transition: Submitted → Resolved	Skipping workflow steps	Follow the defined lifecycle order.
-Request not found: REQ9999	Wrong ID	Verify the ID from View My Requests.
-EACCES: permission denied, open 'data/users.json'	Read-only folder	Ensure the project folder is writable.
+Request not found: REQ9999	Wrong ID	
+Verify the ID from View My Requests.
+EACCES: permission denied, open 'data/users.json'	
+Read-only folder	
+Ensure the project folder is writable.
 Cannot find module ...	Node < v18 or corrupt node_modules	Upgrade Node and re-run npm install.
-5. Test Report
 
-Test file: tests/system.test.js
-Runner: node:test (Node.js built-in)
-Command: npm test
-Date executed: to be filled on submission
-Result summary: 12 Passed / 0 Failed
 
-    Evidence column: paste a screenshot of the terminal output for each test run, or the raw console log. All tests are deterministic and use isolated temp data files.
 
-#	Test ID	Feature Tested	Test Input	Expected Result	Actual Result	Result	Evidence
-1	T-01	User creation – Student	{name:"John", email:"j@x.com", studentNumber:"S001"}	StudentRequester instance with role STUDENT	Instance created, getRole() returns STUDENT	✅ Pass	test-01-console.png
-2	T-02	User creation – Technician	{name:"Alice", email:"a@x.com", specialty:"Electrical"}	Technician instance with role TECHNICIAN	Instance created with specialty="Electrical"	✅ Pass	test-02-console.png
-3	T-03	Invalid email rejected	{email:"not-an-email"}	ValidationError thrown	Error thrown with message Invalid email format	✅ Pass	test-03-console.png
-4	T-04	Request creation – ICT	{category:"ICT", title:"Projector broken", priority:"High"}	ICTRequest instance; getCategory() returns "ICT"	Instance correct; category "ICT"	✅ Pass	test-04-console.png
-5	T-05	Request creation – Maintenance	{category:"Maintenance", title:"Leaking tap"}	MaintenanceRequest instance	Correct subclass returned	✅ Pass	test-05-console.png
-6	T-06	Valid status transition	Submitted → Reviewed	advanceStatus() succeeds; status updates	Status changed to Reviewed	✅ Pass	test-06-console.png
-7	T-07	Invalid status transition	Submitted → Resolved	ValidationError thrown	Error thrown; status unchanged	✅ Pass	test-07-console.png
-8	T-08	Role permission – assign	Student ID calls assignRequest()	PermissionError thrown	Error thrown as expected	✅ Pass	test-08-console.png
-9	T-09	JSON persistence – users	Register user, reload repository	User present after reload	User re-loaded correctly	✅ Pass	test-09-console.png
-10	T-10	JSON persistence – requests	Save request, reload	All fields restored, including history	All fields and history restored	✅ Pass	test-10-console.png
-11	T-11	Search by title substring	"projector" against two requests	Returns the matching request only	Exactly one result returned	✅ Pass	test-11-console.png
-12	T-12	Filter by priority	priority="High"	Only High-priority requests returned	Filtered list correct	✅ Pass	test-12-console.png
-13	T-13	Sort by priority weight	Mixed priorities	Descending by weight	Sorted High→Critical→Medium→Low as designed	✅ Pass	test-13-console.png
-14	T-14	Audit trail logging	Perform submit + assign	Two entries with matching request ID	Two entries recorded correctly	✅ Pass	test-14-console.png
-
-Sample terminal output
-text
-
-$ npm test
-
-> at3-campus-service-request-system@1.0.0 test
-> node --test
-
-TAP version 13
-# Subtest: T-01 User creation – Student
-ok 1 - T-01 User creation – Student
-# Subtest: T-02 User creation – Technician
-ok 2 - T-02 User creation – Technician
-...
-# Subtest: T-14 Audit trail logging
-ok 14 - T-14 Audit trail logging
-
-1..14
-# tests 14
-# pass 14
-# fail 0
-
-✅ Document Consistency Statement
-
-All diagrams, tables, class names, method names, and file paths in this document correspond to the final submitted system. Any change to the codebase after submission invalidates the corresponding section; the submitted version matches exactly as documented above.
